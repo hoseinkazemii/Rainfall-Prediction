@@ -130,6 +130,7 @@ dmypy.json
 
 *.csv
 
+test.py/
 
 reports/*
 !reports/.gitkeep

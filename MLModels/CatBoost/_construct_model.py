@@ -12,10 +12,10 @@ def _construct_model(**params):
 	eval_metric = params.get("eval_metric")
 	task_type = params.get("task_type")
 	random_seed = params.get("random_seed")
-	verbose = params.get("verbose")
+	verbose_cb = params.get("verbose_cb")
 	boosting_type = params.get("boosting_type")
 	thread_count = params.get("thread_count")
-	
+
 	model = CatBoostClassifier(iterations = iterations,
                            learning_rate = learning_rate,
                            depth = depth,
@@ -25,7 +25,7 @@ def _construct_model(**params):
                            eval_metric = eval_metric,
                            task_type = task_type,
                            random_seed = random_seed,
-                           verbose = verbose,
+                           verbose = verbose_cb,
                            boosting_type = boosting_type,
                            thread_count = thread_count)
 

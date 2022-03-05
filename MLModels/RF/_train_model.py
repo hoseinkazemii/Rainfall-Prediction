@@ -1,5 +1,4 @@
 from utils import evaluate_classification
-from utils import evaluate_regression
 
 def train_model(X_train, X_test, y_train, y_test,**params):
 
@@ -19,15 +18,6 @@ def train_model(X_train, X_test, y_train, y_test,**params):
 	evaluate_classification(
 		[f'OnTrain', X_train, y_train],
 		[f'OnTest', X_test, y_test],
-		model = model,
-		model_name = f"RF",
-		logger = log,
-		slicer = 1,
-		direc = direc)
-
-	evaluate_regression(
-		[f'OnTrain-LeakSize', X_train, y_train],
-		[f'OnTest-LeakSize', X_test, y_test],
 		model = model,
 		model_name = f"RF",
 		logger = log,

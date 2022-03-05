@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore")
+
 from DataLoader import *
 from Preprocessing import *
 from MLModels import *
@@ -10,7 +13,6 @@ def run():
 	"verbose_outliers" : True,
 	"imputer" : "Iter_BR",
 	"K_SMOTE" : 5,
-	"model" : "CatBoost",
 
 
 
@@ -45,9 +47,11 @@ def run():
 					# 'eval_metric' : "RMSE",
 					'eval_metric' : "Accuracy",
 					'task_type' : 'CPU',
-					'verbose' : 400,
+					'verbose_cb' : 400,
 					'boosting_type' : 'Ordered',
-					'thread_count' : -1,}
+					'thread_count' : -1,
+					"model_name" : "CatBoost"}
+
 
 	myCatBoostModel = CatBoostModel(**{**cb_settings,
 		                                          **settings})
@@ -61,7 +65,8 @@ def run():
 	# 				'min_samples_leaf' : 1,
 	# 				'max_features' : 'auto',
 	# 				'should_cross_val' : False,
-	# 				'n_jobs' : -1,}
+	# 				'n_jobs' : -1,
+	# 				"model_name" : "RF"}
 
 	# myRFModel = RFModel(**{**rf_settings,
 	# 									**modelling_settings})
