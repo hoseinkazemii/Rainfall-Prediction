@@ -1,7 +1,7 @@
-def _save_model(*args, **kwargs):
+def _save_model(*args, **params):
 	
-	directory = kwargs.get('directory')
-	model_name = kwargs.get("model_name")
+	directory = params.get('directory')
+	model_name = params.get("model_name")
 
 	save_address = f"{directory}/" 
 	model.save(save_address + f"{model_name}-SavedModel.h5", save_format = 'h5')

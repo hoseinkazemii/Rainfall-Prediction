@@ -3,7 +3,7 @@ from tensorflow.keras.models import load_model
 def _load_model(*args, **kwargs):
 	
 	should_checkpoint = kwargs.get('should_checkpoint')
-	directory = kwargs.get('directory')
+	DNN_model_directory = kwargs.get('DNN_model_directory')
 
 	# load json and create model
 	if should_checkpoint:
@@ -11,6 +11,6 @@ def _load_model(*args, **kwargs):
 	else:
 		model_type = 'SavedModel'
 
-	model = load_model(directory + "/" +  f"{model_type}.h5")
+	model = load_model(DNN_model_directory + "/" +  f"{model_type}.h5")
 
 	return model

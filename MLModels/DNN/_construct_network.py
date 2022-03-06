@@ -5,21 +5,18 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.regularizers import l1, l2
 
 
-def _construct_network( **kwargs):
-	# print(kwargs)
-	# raise ValueError
-	layers = kwargs.get('layers')
-	input_dim = kwargs.get('input_dim')
-	output_dim = kwargs.get('output_dim')
-	input_activation_func = kwargs.get('input_activation_func')
-	hidden_activation_func = kwargs.get('hidden_activation_func')
-	final_activation_func = kwargs.get('final_activation_func')
-	regul_type = kwargs.get('regul_type')
-	act_regul_type = kwargs.get('act_regul_type')
-	reg_param = kwargs.get('reg_param')
-	dropout = kwargs.get('dropout')	
-	loss_func = kwargs.get('loss_func')
-	optimizer = kwargs.get('optimizer')
+def _construct_network(input_dim, **params):
+	layers = params.get('layers')
+	output_dim = params.get('output_dim')
+	input_activation_func = params.get('input_activation_func')
+	hidden_activation_func = params.get('hidden_activation_func')
+	final_activation_func = params.get('final_activation_func')
+	regul_type = params.get('regul_type')
+	act_regul_type = params.get('act_regul_type')
+	reg_param = params.get('reg_param')
+	dropout = params.get('dropout')	
+	loss_func = params.get('loss_func')
+	optimizer = params.get('optimizer')
 		
 	l = l2 if regul_type == 'l2' else l1
 	actl = l1 if act_regul_type == 'l1' else l2
@@ -44,7 +41,7 @@ def _construct_network( **kwargs):
 	 
 	# Compile model
 	model.compile(loss=loss_func,
-					optimizer=optimizer,
-					metrics = ['accuracy'])
+				  optimizer=optimizer,
+				  metrics=['accuracy'])
 
 	return model
