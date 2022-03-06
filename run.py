@@ -37,41 +37,42 @@ def run():
 
 	#Step2-Training:
 	# 2-1: CatBoost
-	cb_settings = {'iterations' : 2,
-					'learning_rate' : 0.1,
-					'depth' : 9,
-					'l2_leaf_reg' : 0.001,
-					'loss_function' : 'Logloss',
-					# 'loss_function' : 'RMSE',
-					'allow_writing_files' : False,
-					# 'eval_metric' : "RMSE",
-					'eval_metric' : "Accuracy",
-					'task_type' : 'CPU',
-					'verbose_cb' : 400,
-					'boosting_type' : 'Ordered',
-					'thread_count' : -1,
-					"model_name" : "CatBoost"}
+	# cb_settings = {'iterations' : 2,
+	# 				'learning_rate' : 0.1,
+	# 				'depth' : 9,
+	# 				'l2_leaf_reg' : 0.001,
+	# 				'loss_function' : 'Logloss',
+	# 				# 'loss_function' : 'RMSE',
+	# 				'allow_writing_files' : False,
+	# 				# 'eval_metric' : "RMSE",
+	# 				'eval_metric' : "Accuracy",
+	# 				'task_type' : 'CPU',
+	# 				'verbose_cb' : 400,
+	# 				'boosting_type' : 'Ordered',
+	# 				'thread_count' : -1,
+	# 				"model_name" : "CatBoost"}
 
 
-	myCatBoostModel = CatBoostModel(**{**cb_settings,
-		                                          **settings})
-	myCatBoostModel._construct_model()
-	myCatBoostModel.run(X_train, X_test, y_train, y_test)
+	# myCatBoostModel = CatBoostModel(**{**cb_settings,
+	# 	                                          **settings})
+	# myCatBoostModel._construct_model()
+	# myCatBoostModel.run(X_train, X_test, y_train, y_test)
 
 	# 2-2:RandomForest
-	# rf_settings = {'n_estimators' : 100,
-	# 				'max_depth' : 200,
-	# 				'min_samples_split' : 2,
-	# 				'min_samples_leaf' : 1,
-	# 				'max_features' : 'auto',
-	# 				'should_cross_val' : False,
-	# 				'n_jobs' : -1,
-	# 				"model_name" : "RF"}
+	rf_settings = {'n_estimators' : 100,
+					'max_depth' : 200,
+					'min_samples_split' : 2,
+					'min_samples_leaf' : 1,
+					'max_features' : 'auto',
+					'should_cross_val' : False,
+					'n_jobs' : -1,
+					"verbose_rf" : 2,
+					"model_name" : "RF"}
 
-	# myRFModel = RFModel(**{**rf_settings,
-	# 									**modelling_settings})
-	# myRFModel._construct_model()
-	# myRFModel.run()
+	myRFModel = RFModel(**{**rf_settings,
+										**settings})
+	myRFModel._construct_model()
+	myRFModel.run(X_train, X_test, y_train, y_test)
 
 
 

@@ -13,5 +13,5 @@ class RFModel(BaseMLModel):
 		_log_hyperparameters(**self.__dict__)
 		self.model = _construct_model(**self.__dict__)
 
-	def run(self, *args, **kwargs):		
-		train_model(**self.__dict__)
+	def run(self, X_train, X_test, y_train, y_test, *args, **kwargs):		
+		train_model(X_train, X_test, y_train, y_test, **self.__dict__)
