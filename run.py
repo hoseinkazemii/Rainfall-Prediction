@@ -37,6 +37,7 @@ def run():
 
 	#Step2-Training:
 	# 2-1: CatBoost
+
 	# cb_settings = {'iterations' : 2,
 	# 				'learning_rate' : 0.1,
 	# 				'depth' : 9,
@@ -59,29 +60,31 @@ def run():
 	# myCatBoostModel.run(X_train, X_test, y_train, y_test)
 
 	# 2-2: RandomForest
-	rf_settings = {'n_estimators' : 100,
-					'max_depth' : 200,
-					'min_samples_split' : 2,
-					'min_samples_leaf' : 1,
-					'max_features' : 'auto',
-					'should_cross_val' : False,
-					'n_jobs' : -1,
-					"verbose_rf" : 2,
-					"model_name" : "RF"}
 
-	myRFModel = RFModel(**{**rf_settings,
-										**settings})
-	myRFModel._construct_model()
-	myRFModel.run(X_train, X_test, y_train, y_test)
+	# rf_settings = {'n_estimators' : 100,
+	# 				'max_depth' : 200,
+	# 				'min_samples_split' : 2,
+	# 				'min_samples_leaf' : 1,
+	# 				'max_features' : 'auto',
+	# 				'should_cross_val' : False,
+	# 				'n_jobs' : -1,
+	# 				"verbose_rf" : 2,
+	# 				"model_name" : "RF"}
+
+	# myRFModel = RFModel(**{**rf_settings,
+	# 									**settings})
+	# myRFModel._construct_model()
+	# myRFModel.run(X_train, X_test, y_train, y_test)
 
 	# 2-3: DNN
-	DNN_settings = {'DNN_model_directory' : './SavedModels'
+
+	DNN_settings = {'DNN_model_directory' : './SavedModels',
 			  'layers' : [10,30,20],
 			  'input_activation_func' : 'tanh',
 			  'hidden_activation_func' : 'relu',
 			  'final_activation_func' : 'sigmoid',
 			  'loss_func' : 'binary_crossentropy',
-			  'epochs' : 10,
+			  'epochs' : 2,
 			  'min_delta' : 0.00001,
 			  'patience' : 10,
 		      'batch_size' : 32,
@@ -93,14 +96,15 @@ def run():
 			  'dropout' : 0.2,
 			  'optimizer' : 'adam',
 			  'random_state' : 42,
+			  'split_size' : 0.2,
 			  'output_dim' : 1,
 			  'warm_up' : False,
 			  'model_name' : 'DNN',}
 
 	myDNNModel = DNNModel(**{**DNN_settings,
 											**settings})
-	myDNNLeakDetector._construct_model()
-	myDNNLeakDetector.run(X_train, X_test, y_train, y_test)
+	myDNNModel._construct_model(df)
+	myDNNModel.run(X_train, X_test, y_train, y_test)
 
 
 
