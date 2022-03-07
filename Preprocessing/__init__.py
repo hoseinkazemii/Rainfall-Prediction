@@ -10,3 +10,4 @@ from .split_data_one_climate import split_data_one_climate
 from .split_data_all_climates import split_data_all_climates
 from .scaler import scaler
 from .oversample import oversample
+from .reshape_X import reshape_X
