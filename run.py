@@ -14,7 +14,7 @@ def run():
 	"random_state" : 42,
 	"imputer" : "Iter_BR",
 	"K_SMOTE" : 5,
-	"Koppen_climate" : 'Cfa',
+	"Koppen_climate" : 'BSh',
 	# ['Cfa', 'BSh', 'Cfb', 'BSk',
 	#  'Csb', 'Am', 'Aw', 'BWh', 'Csa']
 
@@ -39,7 +39,7 @@ def run():
 	df_climate, df_all = split_climate(df, **settings)	
 	X_train, X_test, y_train, y_test = split_data_all_climates(df_all, df_climate, **settings)
 	X_train, X_test = scaler(X_train, X_test, **settings)
-	X_train, y_train = oversample(X_train, y_train, **settings)
+	# X_train, y_train = oversample(X_train, y_train, **settings)
 
 	#Step1-2-Training:
 	# 1-2-1: CatBoost
@@ -117,35 +117,35 @@ def run():
 
 	# 1-2-4: LSTM
 
-	LSTM_settings = {'LSTM_model_directory' : './SavedModels',
-			  'layers' : [10,30],
-			  'input_activation_func' : 'relu',
-			  'hidden_activation_func' : 'relu',
-			  'final_activation_func' : 'sigmoid',
-			  'loss_func' : 'binary_crossentropy',
-			  'epochs' : 2,
-			  'min_delta' : 0.00001,
-			  'patience' : 10,
-		      'batch_size' : 32,
-			  'should_early_stop' : False,
-			  'should_checkpoint' : False,
-		      'regul_type' : 'l2',
-			  'act_regul_type' : 'l1',
-			  'reg_param' : 0.01,
-			  'dropout' : 0.2,
-			  'optimizer' : 'adam',
-			  'random_state' : 42,
-			  'split_size' : 0.2,
-			  'output_dim' : 1,
-			  'warm_up' : False,
-			  'model_name' : 'LSTM',
-			  "approach" : "AllClimates",}
+	# LSTM_settings = {'LSTM_model_directory' : './SavedModels',
+	# 		  'layers' : [15,30,35],
+	# 		  'input_activation_func' : 'relu',
+	# 		  'hidden_activation_func' : 'relu',
+	# 		  'final_activation_func' : 'sigmoid',
+	# 		  'loss_func' : 'binary_crossentropy',
+	# 		  'epochs' : 50,
+	# 		  'min_delta' : 0.00001,
+	# 		  'patience' : 10,
+	# 	      'batch_size' : 16,
+	# 		  'should_early_stop' : False,
+	# 		  'should_checkpoint' : False,
+	# 	      'regul_type' : 'l2',
+	# 		  'act_regul_type' : 'l1',
+	# 		  'reg_param' : 0.01,
+	# 		  'dropout' : 0.2,
+	# 		  'optimizer' : 'adam',
+	# 		  'random_state' : 42,
+	# 		  'split_size' : 0.2,
+	# 		  'output_dim' : 1,
+	# 		  'warm_up' : False,
+	# 		  'model_name' : 'LSTM',
+	# 		  "approach" : "AllClimates",}
 
-	myLSTMModel = LSTMModel(**{**LSTM_settings,
-											**settings})
-	X_train, X_test = reshape_X(X_train, X_test, **settings)
-	myLSTMModel._construct_model(df_all, X_train)
-	myLSTMModel.run(X_train, X_test, y_train, y_test)
+	# myLSTMModel = LSTMModel(**{**LSTM_settings,
+	# 										**settings})
+	# X_train, X_test = reshape_X(X_train, X_test, **settings)
+	# myLSTMModel._construct_model(df_all, X_train)
+	# myLSTMModel.run(X_train, X_test, y_train, y_test)
 
 
 
@@ -165,7 +165,7 @@ def run():
 	# df_climate, _ = split_climate(df, **settings)	
 	# X_train, X_test, y_train, y_test = split_data_one_climate(df_climate, **settings)
 	# X_train, X_test = scaler(X_train, X_test, **settings)
-	# X_train, y_train = oversample(X_train, y_train, **settings)
+	# # X_train, y_train = oversample(X_train, y_train, **settings)
 
 	# Step2-2-Training:
 	# 2-2-1: CatBoost
@@ -241,7 +241,37 @@ def run():
 	# myDNNModel._construct_model(df_climate)
 	# myDNNModel.run(X_train, X_test, y_train, y_test)
 
+	# 1-2-4: LSTM
 
+	# LSTM_settings = {'LSTM_model_directory' : './SavedModels',
+	# 		  'layers' : [10,20],
+	# 		  'input_activation_func' : 'relu',
+	# 		  'hidden_activation_func' : 'relu',
+	# 		  'final_activation_func' : 'sigmoid',
+	# 		  'loss_func' : 'binary_crossentropy',
+	# 		  'epochs' : 30,
+	# 		  'min_delta' : 0.00001,
+	# 		  'patience' : 10,
+	# 	      'batch_size' : 64,
+	# 		  'should_early_stop' : False,
+	# 		  'should_checkpoint' : False,
+	# 	      'regul_type' : 'l2',
+	# 		  'act_regul_type' : 'l1',
+	# 		  'reg_param' : 0.01,
+	# 		  'dropout' : 0.2,
+	# 		  'optimizer' : 'adam',
+	# 		  'random_state' : 42,
+	# 		  'split_size' : 0.2,
+	# 		  'output_dim' : 1,
+	# 		  'warm_up' : False,
+	# 		  'model_name' : 'LSTM',
+	# 		  "approach" : "OneClimate",}
+
+	# myLSTMModel = LSTMModel(**{**LSTM_settings,
+	# 										**settings})
+	# X_train, X_test = reshape_X(X_train, X_test, **settings)
+	# myLSTMModel._construct_model(df_climate, X_train)
+	# myLSTMModel.run(X_train, X_test, y_train, y_test)
 
 
 

@@ -7,7 +7,7 @@ def oversample(X_train, y_train, **params):
 	if verbose:
 		print("oversampling minority class...")
 
-	oversampler = SMOTE(sampling_strategy = 'minority', k_neighbors = 5, n_jobs = 6)
+	oversampler = SMOTE(sampling_strategy = 'minority', k_neighbors = K_SMOTE, n_jobs = 6)
 
 	X_train, y_train = oversampler.fit_resample(X_train, y_train)
 

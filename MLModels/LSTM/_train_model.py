@@ -25,8 +25,8 @@ def train_model(X_train, X_test, y_train, y_test, **params):
 			  			validation_split=split_size,
 			  			epochs=epochs,
 			  			batch_size=batch_size,
-		      			verbose=2, 
-		      			shuffle=True, 
+		      			verbose=2,
+		      			# shuffle=True, 
 			  			callbacks=call_back_list)
 
 	# Evaluate the model

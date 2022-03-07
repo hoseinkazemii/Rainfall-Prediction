@@ -31,15 +31,30 @@ def _construct_network(input_dim, X_train, **params):
 					kernel_regularizer = l(reg_param),
 					activity_regularizer = actl(reg_param),
 					return_sequences = True))
-	
-	for ind in range(1,len(layers)):
-		model.add(LSTM(layers[ind],
+	if len(layers) == 2:
+
+		for ind in range(1,len(layers)):
+			model.add(LSTM(layers[ind],
+							activation = hidden_activation_func,
+							kernel_regularizer = l(reg_param),
+							activity_regularizer = actl(reg_param)))
+			model.add(Dropout(dropout))
+	else:
+		for ind in range(1,len(layers)-1):
+			model.add(LSTM(layers[ind],
+							activation = hidden_activation_func,
+							kernel_regularizer = l(reg_param),
+							activity_regularizer = actl(reg_param),
+							return_sequences = True))
+			model.add(Dropout(dropout))
+
+		model.add(LSTM(layers[-1],
 						activation = hidden_activation_func,
 						kernel_regularizer = l(reg_param),
 						activity_regularizer = actl(reg_param)))
-		model.add(Dropout(dropout))
-	
+
 	model.add(Dense(output_dim, activation = final_activation_func))
+
 	 
 	# Compile model
 	model.compile(loss=loss_func,
