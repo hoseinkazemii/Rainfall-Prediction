@@ -6,6 +6,7 @@ from .deal_with_outliers import deal_with_outliers
 from .deal_with_nulls import deal_with_nulls
 from .split_climate import split_climate
 from .cat_dummies import cat_dummies
+from .shuffle_df import shuffle_df
 from .split_data_one_climate import split_data_one_climate
 from .split_data_all_climates import split_data_all_climates
 from .scaler import scaler

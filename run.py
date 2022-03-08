@@ -14,7 +14,7 @@ def run():
 	"random_state" : 42,
 	"imputer" : "Iter_BR",
 	"K_SMOTE" : 5,
-	"Koppen_climate" : 'BSh',
+	"Koppen_climate" : 'Am',
 	# ['Cfa', 'BSh', 'Cfb', 'BSk',
 	#  'Csb', 'Am', 'Aw', 'BWh', 'Csa']
 
@@ -28,18 +28,19 @@ def run():
 	#		Testing model on the excluded one.
 	#Step1-1-Preprocessing:
 
-	df = load_data(**settings)
-	df = make_datetime_cols(df, **settings)
-	# describe_numerical_cols(df, **settings)
-	# box_plot(df, **settings)
-	# kde_plot(df, **settings)
-	df = deal_with_outliers(df, **settings)
-	df = deal_with_nulls(df, **settings)
-	df = cat_dummies(df, **settings)
-	df_climate, df_all = split_climate(df, **settings)	
-	X_train, X_test, y_train, y_test = split_data_all_climates(df_all, df_climate, **settings)
-	X_train, X_test = scaler(X_train, X_test, **settings)
-	# X_train, y_train = oversample(X_train, y_train, **settings)
+	# df = load_data(**settings)
+	# df = make_datetime_cols(df, **settings)
+	# # describe_numerical_cols(df, **settings)
+	# # box_plot(df, **settings)
+	# # kde_plot(df, **settings)
+	# df = deal_with_outliers(df, **settings)
+	# df = deal_with_nulls(df, **settings)
+	# df = cat_dummies(df, **settings)
+	# df = shuffle_df(df, **settings)
+	# df_climate, df_all = split_climate(df, **settings)	
+	# X_train, X_test, y_train, y_test = split_data_all_climates(df_all, df_climate, **settings)
+	# X_train, X_test = scaler(X_train, X_test, **settings)
+	# # X_train, y_train = oversample(X_train, y_train, **settings)
 
 	#Step1-2-Training:
 	# 1-2-1: CatBoost
@@ -118,15 +119,15 @@ def run():
 	# 1-2-4: LSTM
 
 	# LSTM_settings = {'LSTM_model_directory' : './SavedModels',
-	# 		  'layers' : [15,30,35],
+	# 		  'layers' : [15,30],
 	# 		  'input_activation_func' : 'relu',
 	# 		  'hidden_activation_func' : 'relu',
 	# 		  'final_activation_func' : 'sigmoid',
 	# 		  'loss_func' : 'binary_crossentropy',
-	# 		  'epochs' : 50,
+	# 		  'epochs' : 90,
 	# 		  'min_delta' : 0.00001,
 	# 		  'patience' : 10,
-	# 	      'batch_size' : 16,
+	# 	      'batch_size' : 32,
 	# 		  'should_early_stop' : False,
 	# 		  'should_checkpoint' : False,
 	# 	      'regul_type' : 'l2',
@@ -154,43 +155,44 @@ def run():
 	#		Testing model on the excluded one.
 	#Step2-1-Preprocessing:
 
-	# df = load_data(**settings)
-	# df = make_datetime_cols(df, **settings)
-	# # describe_numerical_cols(df, **settings)
-	# # box_plot(df, **settings)
-	# # kde_plot(df, **settings)
-	# df = deal_with_outliers(df, **settings)
-	# df = deal_with_nulls(df, **settings)
-	# df = cat_dummies(df, **settings)
-	# df_climate, _ = split_climate(df, **settings)	
-	# X_train, X_test, y_train, y_test = split_data_one_climate(df_climate, **settings)
-	# X_train, X_test = scaler(X_train, X_test, **settings)
-	# # X_train, y_train = oversample(X_train, y_train, **settings)
+	df = load_data(**settings)
+	df = make_datetime_cols(df, **settings)
+	# describe_numerical_cols(df, **settings)
+	# box_plot(df, **settings)
+	# kde_plot(df, **settings)
+	df = deal_with_outliers(df, **settings)
+	df = deal_with_nulls(df, **settings)
+	df = cat_dummies(df, **settings)
+	df = shuffle_df(df, **settings)
+	df_climate, _ = split_climate(df, **settings)	
+	X_train, X_test, y_train, y_test = split_data_one_climate(df_climate, **settings)
+	X_train, X_test = scaler(X_train, X_test, **settings)
+	X_train, y_train = oversample(X_train, y_train, **settings)
 
 	# Step2-2-Training:
 	# 2-2-1: CatBoost
 
-	# cb_settings = {'iterations' : 2,
-	# 				'learning_rate' : 0.1,
-	# 				'depth' : 9,
-	# 				'l2_leaf_reg' : 0.001,
-	# 				'loss_function' : 'Logloss',
-	# 				# 'loss_function' : 'RMSE',
-	# 				'allow_writing_files' : False,
-	# 				# 'eval_metric' : "RMSE",
-	# 				'eval_metric' : "Accuracy",
-	# 				'task_type' : 'CPU',
-	# 				'verbose_cb' : 400,
-	# 				'boosting_type' : 'Ordered',
-	# 				'thread_count' : -1,
-	# 				"model_name" : "CatBoost",
-	# 				"approach" : "OneClimate",}
+	cb_settings = {'iterations' : 2,
+					'learning_rate' : 0.1,
+					'depth' : 2,
+					'l2_leaf_reg' : 0.001,
+					'loss_function' : 'Logloss',
+					# 'loss_function' : 'RMSE',
+					'allow_writing_files' : False,
+					# 'eval_metric' : "RMSE",
+					'eval_metric' : "Accuracy",
+					'task_type' : 'CPU',
+					'verbose_cb' : 400,
+					'boosting_type' : 'Ordered',
+					'thread_count' : -1,
+					"model_name" : "CatBoost",
+					"approach" : "OneClimate",}
 
 
-	# myCatBoostModel = CatBoostModel(**{**cb_settings,
-	# 	                                          **settings})
-	# myCatBoostModel._construct_model()
-	# myCatBoostModel.run(X_train, X_test, y_train, y_test)
+	myCatBoostModel = CatBoostModel(**{**cb_settings,
+		                                          **settings})
+	myCatBoostModel._construct_model()
+	myCatBoostModel.run(X_train, X_test, y_train, y_test)
 
 	# 2-2-2: RandomForest
 
@@ -241,7 +243,7 @@ def run():
 	# myDNNModel._construct_model(df_climate)
 	# myDNNModel.run(X_train, X_test, y_train, y_test)
 
-	# 1-2-4: LSTM
+	# 2-2-4: LSTM
 
 	# LSTM_settings = {'LSTM_model_directory' : './SavedModels',
 	# 		  'layers' : [10,20],
@@ -252,7 +254,7 @@ def run():
 	# 		  'epochs' : 30,
 	# 		  'min_delta' : 0.00001,
 	# 		  'patience' : 10,
-	# 	      'batch_size' : 64,
+	# 	      'batch_size' : 16,
 	# 		  'should_early_stop' : False,
 	# 		  'should_checkpoint' : False,
 	# 	      'regul_type' : 'l2',
