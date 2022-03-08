@@ -28,19 +28,19 @@ def run():
 	#		Testing model on the excluded one.
 	#Step1-1-Preprocessing:
 
-	# df = load_data(**settings)
-	# df = make_datetime_cols(df, **settings)
-	# # describe_numerical_cols(df, **settings)
-	# # box_plot(df, **settings)
-	# # kde_plot(df, **settings)
-	# df = deal_with_outliers(df, **settings)
-	# df = deal_with_nulls(df, **settings)
-	# df = cat_dummies(df, **settings)
-	# df = shuffle_df(df, **settings)
-	# df_climate, df_all = split_climate(df, **settings)	
-	# X_train, X_test, y_train, y_test = split_data_all_climates(df_all, df_climate, **settings)
-	# X_train, X_test = scaler(X_train, X_test, **settings)
-	# # X_train, y_train = oversample(X_train, y_train, **settings)
+	df = load_data(**settings)
+	df = make_datetime_cols(df, **settings)
+	# describe_numerical_cols(df, **settings)
+	# box_plot(df, **settings)
+	# kde_plot(df, **settings)
+	df = deal_with_outliers(df, **settings)
+	df = deal_with_nulls(df, **settings)
+	df = cat_dummies(df, **settings)
+	df = shuffle_df(df, **settings)
+	df_climate, df_all = split_climate(df, **settings)	
+	X_train, X_test, y_train, y_test = split_data_all_climates(df_all, df_climate, **settings)
+	X_train, X_test = scaler(X_train, X_test, **settings)
+	# X_train, y_train = oversample(X_train, y_train, **settings)
 
 	#Step1-2-Training:
 	# 1-2-1: CatBoost
@@ -118,13 +118,45 @@ def run():
 
 	# 1-2-4: LSTM
 
-	# LSTM_settings = {'LSTM_model_directory' : './SavedModels',
+	LSTM_settings = {'LSTM_model_directory' : './SavedModels',
+			  'layers' : [15,30],
+			  'input_activation_func' : 'relu',
+			  'hidden_activation_func' : 'relu',
+			  'final_activation_func' : 'sigmoid',
+			  'loss_func' : 'binary_crossentropy',
+			  'epochs' : 10,
+			  'min_delta' : 0.00001,
+			  'patience' : 10,
+		      'batch_size' : 32,
+			  'should_early_stop' : False,
+			  'should_checkpoint' : False,
+		      'regul_type' : 'l2',
+			  'act_regul_type' : 'l1',
+			  'reg_param' : 0.01,
+			  'dropout' : 0.2,
+			  'optimizer' : 'adam',
+			  'random_state' : 42,
+			  'split_size' : 0.2,
+			  'output_dim' : 1,
+			  'warm_up' : False,
+			  'model_name' : 'LSTM',
+			  "approach" : "AllClimates",}
+
+	myLSTMModel = LSTMModel(**{**LSTM_settings,
+											**settings})
+	X_train, X_test = reshape_X(X_train, X_test, **settings)
+	myLSTMModel._construct_model(df_all, X_train)
+	myLSTMModel.run(X_train, X_test, y_train, y_test)
+
+	# 1-2-5: GRU
+
+	# GRU_settings = {'GRU_model_directory' : './SavedModels',
 	# 		  'layers' : [15,30],
 	# 		  'input_activation_func' : 'relu',
 	# 		  'hidden_activation_func' : 'relu',
 	# 		  'final_activation_func' : 'sigmoid',
 	# 		  'loss_func' : 'binary_crossentropy',
-	# 		  'epochs' : 90,
+	# 		  'epochs' : 30,
 	# 		  'min_delta' : 0.00001,
 	# 		  'patience' : 10,
 	# 	      'batch_size' : 32,
@@ -139,14 +171,14 @@ def run():
 	# 		  'split_size' : 0.2,
 	# 		  'output_dim' : 1,
 	# 		  'warm_up' : False,
-	# 		  'model_name' : 'LSTM',
+	# 		  'model_name' : 'GRU',
 	# 		  "approach" : "AllClimates",}
 
-	# myLSTMModel = LSTMModel(**{**LSTM_settings,
+	# myGRUModel = GRUModel(**{**GRU_settings,
 	# 										**settings})
 	# X_train, X_test = reshape_X(X_train, X_test, **settings)
-	# myLSTMModel._construct_model(df_all, X_train)
-	# myLSTMModel.run(X_train, X_test, y_train, y_test)
+	# myGRUModel._construct_model(df_all, X_train)
+	# myGRUModel.run(X_train, X_test, y_train, y_test)
 
 
 
@@ -167,12 +199,12 @@ def run():
 	df_climate, _ = split_climate(df, **settings)	
 	X_train, X_test, y_train, y_test = split_data_one_climate(df_climate, **settings)
 	X_train, X_test = scaler(X_train, X_test, **settings)
-	X_train, y_train = oversample(X_train, y_train, **settings)
+	# X_train, y_train = oversample(X_train, y_train, **settings)
 
 	# Step2-2-Training:
 	# 2-2-1: CatBoost
 
-	cb_settings = {'iterations' : 2,
+	cb_settings = {'iterations' : 5,
 					'learning_rate' : 0.1,
 					'depth' : 2,
 					'l2_leaf_reg' : 0.001,
@@ -275,7 +307,37 @@ def run():
 	# myLSTMModel._construct_model(df_climate, X_train)
 	# myLSTMModel.run(X_train, X_test, y_train, y_test)
 
+	# 2-2-5: GRU
 
+	# GRU_settings = {'GRU_model_directory' : './SavedModels',
+	# 		  'layers' : [5,10],
+	# 		  'input_activation_func' : 'relu',
+	# 		  'hidden_activation_func' : 'relu',
+	# 		  'final_activation_func' : 'sigmoid',
+	# 		  'loss_func' : 'binary_crossentropy',
+	# 		  'epochs' : 15,
+	# 		  'min_delta' : 0.00001,
+	# 		  'patience' : 10,
+	# 	      'batch_size' : 16,
+	# 		  'should_early_stop' : False,
+	# 		  'should_checkpoint' : False,
+	# 	      'regul_type' : 'l2',
+	# 		  'act_regul_type' : 'l1',
+	# 		  'reg_param' : 0.01,
+	# 		  'dropout' : 0.2,
+	# 		  'optimizer' : 'adam',
+	# 		  'random_state' : 42,
+	# 		  'split_size' : 0.2,
+	# 		  'output_dim' : 1,
+	# 		  'warm_up' : False,
+	# 		  'model_name' : 'GRU',
+	# 		  "approach" : "OneClimate",}
+
+	# myGRUModel = GRUModel(**{**GRU_settings,
+	# 										**settings})
+	# X_train, X_test = reshape_X(X_train, X_test, **settings)
+	# myGRUModel._construct_model(df_climate, X_train)
+	# myGRUModel.run(X_train, X_test, y_train, y_test)
 
 
 

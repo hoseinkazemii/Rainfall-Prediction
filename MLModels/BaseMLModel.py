@@ -12,7 +12,7 @@ class BaseMLModel:
 		now = datetime.now().strftime("%Y%m%d%H%M")
 
 		self.report_directory = \
-			os.path.join(".", 'reports', self.model_name, self.approach, self.Koppen_climate , f"{now}")
+			os.path.join(".", 'reports', self.approach, self.model_name, self.Koppen_climate , f"{now}")
 		if not os.path.exists(self.report_directory):
 			os.makedirs(self.report_directory)
 		self.log = Logger(address = f"{self.report_directory}/Log.log")
