@@ -1,4 +1,5 @@
 from utils import evaluate_classification
+import numpy as np
 
 def train_model(X_train, X_test, y_train, y_test, **params):
 	
@@ -10,7 +11,9 @@ def train_model(X_train, X_test, y_train, y_test, **params):
 	if verbose:
 		print ("Trying to fit to the data...")
 
-	model.fit(X_train, y_train)
+	categorical_features_indices = np.where(X_train.dtypes != np.float)[0]
+
+	model.fit(X_train, y_train, cat_features=categorical_features_indices, plot=True)
 
 	y_pred_train = model.predict(X_train)
 	y_pred_test = model.predict(X_test)
